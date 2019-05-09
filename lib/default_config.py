@@ -95,7 +95,7 @@ def set_scene_alexnet(config, section, model):
     config.set(section, "image_dim", "227")
     config.set(section, "raw_scale", "255")
     config.set(section, "mean", os.path.join(env.pretrained_model_dir, "places205_mean.binaryproto"))
-  
+
 def face_default_config(target_list=None):
     config = ConfigParser.ConfigParser()
     config.add_section("data")

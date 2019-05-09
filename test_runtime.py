@@ -19,7 +19,7 @@ default_datadir = {
     'scene': lib.env.mitplaces_val_dir,
     'face': lib.env.msrface_val_dir,
 }
-  
+
 
 def test_synthesized_data(args, cl, outf):
   datadir = default_datadir[args.task]
@@ -97,21 +97,20 @@ def test_video(args, cl, outf):
     dbg.dbg('%s: %s (%s/%s)' % (lbl, acc, correct, total))
 
 if __name__ == '__main__':
-  parser = argparse.ArgumentParser(description='Process some integers.')
-  parser.add_argument('--type', choices=['syn', 'video'], help='type of input data: synthesized / video data)')
-  parser.add_argument('--task', choices=['obj', 'scene', 'face'], help='recognition task: obj/scene/face')
-  parser.add_argument('-i', '--input', help='specify the input')
-  parser.add_argument('-o', '--output', help='specify the output trace file')
-  parser.add_argument('--model', default=None, help='set the special model (default: None)')
-  parser.add_argument('--frame', type=int, help='set the max number of frames to process; '+
-                      'if not set, process all frames in the input')
-  parser.add_argument('--cpu', action='store_true', help='use cpu in testing')
-  parser.add_argument('--window', choices=['on', 'off'], default='on', 
-                      help='turn on/off window exploration (default: on)')
-  parser.add_argument('--flexexit', choices=['on', 'off'], default='on', 
-                      help='turn on/off flexible exit specialization (default: on)')
-  parser.add_argument('--train_skew', choices=['fixed', 'dynamic'], default='fixed',
-                      help='train skew is fixed or dynamic (default: fixed)')
+  parser = argparse.ArgumentParser(description='Test the runtime classifier.')
+  parser.add_argument('--type', choices=['syn', 'video'], help='Type of input data: synthesized / video data)')
+  parser.add_argument('--task', choices=['obj', 'scene', 'face'],
+                      help='Recognition task: obj/scene/face')
+  parser.add_argument('-i', '--input', help='Specify the input trace')
+  parser.add_argument('-o', '--output', help='Specify the output trace file')
+  parser.add_argument('--model', default=None,
+                      help="Set the compact model (default: None). " +
+                      "If no compact model is specified, runtime only uses " +
+                      "the oracle model to classify frames.")
+  parser.add_argument('--frame', type=int,
+                      help="Set the max number of frames to process; " +
+                      "if not set, process all frames in the input")
+  parser.add_argument('--cpu', action='store_true', help='Use CPU for classification')
   args = parser.parse_args()
   if args.type is None:
     print('Missing type')
@@ -130,4 +129,4 @@ if __name__ == '__main__':
   if args.type == 'syn':
     test_synthesized_data(args, cl, args.output)
   else:
-    test_video(args, cl, args.output)    
+    test_video(args, cl, args.output)

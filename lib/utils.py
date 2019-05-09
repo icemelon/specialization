@@ -21,10 +21,10 @@ def prepare_input(net, inputs, oversample=False, batch=None):
         input_ = caffe.io.oversample(input_, net.crop_dims)
     else:
         # Take center crop.
-        center = np.array(net.image_dims) / 2.0 
+        center = np.array(net.image_dims) / 2.0
         crop = np.tile(center, (1, 2))[0] + np.concatenate([
             -net.crop_dims / 2.0,
-            net.crop_dims / 2.0 
+            net.crop_dims / 2.0
         ])
         crop = crop.astype(int)
         input_ = input_[:, crop[0]:crop[2], crop[1]:crop[3], :]

@@ -1,3 +1,5 @@
+syntax = "proto2";
+
 enum Mode {
     NORMAL = 0;
     TRAIN = 1;
@@ -27,7 +29,7 @@ message DataPoint {
     // whether cascaded to the oracle model when in the SPECIAL mode
     optional bool cascaded = 7;
     // whether the input is in the skewed context
-    // only valid when in TRAIN or SPECIAL mode    
+    // only valid when in TRAIN or SPECIAL mode
     optional bool incontext = 8;
     // estimated accuracy in the last window
     // only valid when in TRAIN or SPECIAL mode
@@ -42,5 +44,5 @@ message Trace {
     repeated DataPoint points = 1;
     optional float accuracy = 2;
     optional float avg_prepare_time = 3;
-    optional float avg_forward_time = 4;    
+    optional float avg_forward_time = 4;
 }

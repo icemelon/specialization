@@ -48,14 +48,14 @@ def generate_db(net, lst, layer_name, dbpath=None, blobKey=None, batch=1):
                 dim.extend(cur.shape)
                 cur = cur.reshape(dim)
             datum = caffe.io.array_to_datum(np.array(cur).astype(float), labels[j])
-            wb.put('%08d' % count, datum.SerializeToString()) 
+            wb.put('%08d' % count, datum.SerializeToString())
             count += 1
             if count % 1000 == 0:
                 wb.write()
                 wb = db.write_batch()
     wb.write()
     db.close()
-    
+
 
 def retarget(nitem, top, nclasses, snapshot_prefix, traindb=None, step_epoch=15,
              max_epoch=40, base_lr=0.1, gamma=0.1):
@@ -69,12 +69,12 @@ def retarget(nitem, top, nclasses, snapshot_prefix, traindb=None, step_epoch=15,
     if traindb is None:
         traindb = "_train"
     topnet.layer[0].data_param.source = traindb
-    
+
     topfile = tempfile.NamedTemporaryFile(delete=False)
-    topfile.write(google.protobuf.text_format.MessageToString(topnet))  
+    topfile.write(google.protobuf.text_format.MessageToString(topnet))
     topfile.close()
 
-    solver_param = caffe_pb2.SolverParameter() 
+    solver_param = caffe_pb2.SolverParameter()
     with open(os.path.join(env.template_dir,  "solver_template.prototxt")) as f:
         google.protobuf.text_format.Merge(f.read(), solver_param)
     solver_param.net = topfile.name
@@ -88,7 +88,7 @@ def retarget(nitem, top, nclasses, snapshot_prefix, traindb=None, step_epoch=15,
     solver_param.stepsize = iter_per_epoch * step_epoch
     solver_param.max_iter = iter_per_epoch * max_epoch
     solver_param.snapshot_prefix = snapshot_prefix
-    dbg.dbg("train for %s iterations, step size: %s iterations" % 
+    dbg.dbg("train for %s iterations, step size: %s iterations" %
             (solver_param.max_iter, solver_param.stepsize))
 
     f = tempfile.NamedTemporaryFile(delete = False)
@@ -109,7 +109,7 @@ def specialize(config, dbpath=None):
     global BATCH
     nitem_per_class = config.getint("train", "item_per_class")
     incontext_percentage = config.getfloat("train", "incontext_percent")
-    
+
     train_root = config.get("data", "train_image_root")
     train_label = config.get("data", "train_label")
     target_list = [int(lbl) for lbl in config.get("train", "target_labels").split(",")]
