@@ -1,0 +1,28 @@
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape: {
+      dim: 1
+      dim: 1000
+      dim: 1
+      dim: 1
+    }
+  }
+}
+layer {
+  bottom: "data"
+  top: "output_sp"
+  name: "output_sp"
+  type: "InnerProduct"
+  inner_product_param {
+    num_output: 8 
+  }
+}
+layer {
+  bottom: "output_sp"
+  name: "output_sp_comput"
+  type: "Softmax"
+  top: "prob"
+}

@@ -1,0 +1,46 @@
+enum Mode {
+    NORMAL = 0;
+    TRAIN = 1;
+    SPECIAL = 2;
+    SPECIAL_EPSILON = 3;
+}
+
+message AffineTransform {
+    optional bool flip = 1;
+    optional float rotate = 2;
+    optional float scale = 3;
+}
+
+message DataPoint {
+    // frame index
+    optional int32 frame = 1;
+    // ground truth label
+    optional int32 label = 2;
+    // predicted label by the classifier
+    optional int32 predict = 3;
+    // mode of the classifier at this frame
+    optional Mode mode = 4;
+    // pre-processing time of the input image
+    optional float prepare_time = 5;
+    // classification time of the neural network
+    optional float forward_time = 6;
+    // whether cascaded to the oracle model when in the SPECIAL mode
+    optional bool cascaded = 7;
+    // whether the input is in the skewed context
+    // only valid when in TRAIN or SPECIAL mode    
+    optional bool incontext = 8;
+    // estimated accuracy in the last window
+    // only valid when in TRAIN or SPECIAL mode
+    optional float estimate_accuracy = 9;
+    // affine transformation config
+    optional AffineTransform affine_transform = 10;
+    optional int32 special_predict = 11;
+    optional int32 oracle_predict = 12;
+}
+
+message Trace {
+    repeated DataPoint points = 1;
+    optional float accuracy = 2;
+    optional float avg_prepare_time = 3;
+    optional float avg_forward_time = 4;    
+}

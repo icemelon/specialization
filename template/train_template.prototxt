@@ -1,0 +1,44 @@
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  data_param {
+      source: "_train/"
+      backend: LEVELDB
+      batch_size: 256
+  }
+  include: { phase: TRAIN }
+}
+layer {
+  bottom: "data"
+  top: "output_sp"
+  name: "output_sp"
+  type: "InnerProduct"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 8
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  bottom: "output_sp"
+  bottom: "label"
+  name: "output_sp_comput"
+  type: "SoftmaxWithLoss"
+  top: "loss"
+}

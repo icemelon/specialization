@@ -1,3 +1,4 @@
 [submodule "caffe"]
 	path = caffe
 	url = https://github.com/icemelon9/caffe.git
+    branch = specialize
